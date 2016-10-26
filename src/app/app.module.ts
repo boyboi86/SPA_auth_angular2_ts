@@ -9,6 +9,7 @@ import { SigninComponent } from "./unprotected/signin.component";
 import { SignupComponent } from "./unprotected/signup.component";
 import { ProtectedComponent } from "./protected/protected.component";
 import { AuthenticateRoutingModule } from './app-routing.module';
+import { AuthService } from './shared/auth.service';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { AuthenticateRoutingModule } from './app-routing.module';
         ProtectedComponent
     ],
     imports: [BrowserModule, HttpModule, ReactiveFormsModule, AuthenticateRoutingModule],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    providers:[AuthService]
 })
 export class AppModule {}
