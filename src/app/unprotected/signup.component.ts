@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { AuthService } from "../shared/auth.service";
 
 @Component({
     template: `
@@ -30,11 +31,11 @@ export class SignupComponent implements OnInit {
     error = false;
     errorMessage = '';
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder, private authService: AuthService) {
     }
-
+    /*Passing form value to Firebase*/
     onSignup() {
-
+      this.authService.signupUser(this.myForm.value);
     }
 
     ngOnInit(): any {
@@ -50,13 +51,13 @@ export class SignupComponent implements OnInit {
             ])],
         });
     }
-
+    /*Email Validator*/
     isEmail(control: FormControl): {[s: string]: boolean} {
         if (!control.value.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
             return {noEmail: true};
         }
     }
-
+    /*Password Validator*/
     isEqualPassword(control: FormControl): {[s: string]: boolean} {
         if (!this.myForm) {
             return {passwordsNotMatch: true};
