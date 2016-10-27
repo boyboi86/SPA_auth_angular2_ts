@@ -8,17 +8,18 @@ import { AuthService } from  "./auth.service";
         <header>
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
-
-                    <ul class="nav navbar-nav">
+                  <!-- if auth is true this will disappear -->
+                    <ul class="nav navbar-nav" *ngIf="!isAuth()">
 
                         <li><a [routerLink]="['signup']">Sign Up</a></li>
                         <li><a [routerLink]="['signin']">Sign In</a></li>
                         <li><a [routerLink]="['protected']">Protected</a></li>
 
                     </ul>
+                    <!-- if auth is false this will disappear -->
                     <ul class="nav navbar-nav navbar-right" *ngIf="isAuth()">
 
-                        <li><a>Logout</a></li>
+                        <li (click)="onLogout()" style="cursor:pointer"><a>Logout</a></li>
                     </ul>
                 </div><!-- /.container-fluid -->
 
@@ -29,8 +30,12 @@ import { AuthService } from  "./auth.service";
 })
 export class HeaderComponent {
   constructor(private authService: AuthService) {}
-
+/*if boolean is true*/
   isAuth(){
-    this.authService.isAuthenticated();
+    return this.authService.isAuthenticated();
+  }
+/*if boolean is false*/
+  onLogout(){
+    return this.authService.logout();
   }
 }
