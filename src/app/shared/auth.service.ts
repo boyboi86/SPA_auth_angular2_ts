@@ -10,10 +10,25 @@ export class AuthService {
                       console.log(err);
                     })
   }
+
   signinUser(user: User){
     firebase.auth().signInWithEmailAndPassword(user.email, user.password)
                     .catch(function(err){
                       console.log(err);
                     })
+  }
+
+  logout(){
+    firebase.auth().signOut();
+  }
+
+  /*Firebase SDK to simulate user Sign in*/
+  isAuthenticated(){
+    const user = firebase.auth().currentUser;
+    if(user){
+      return true;
+    } else {
+      return false;
+    }
   }
 }
