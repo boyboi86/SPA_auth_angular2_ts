@@ -1,34 +1,44 @@
-import { User } from './user.interface';
-/*Declare used only in situation where script/cdn used but not SDK to tell TS it's a known obj*/
-declare const firebase: any;
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Observable, Subject } from "rxjs/Rx";
 
-/*Use firebase for backend authentication*/
+import { User } from "./user.interface";
+
+declare var firebase: any;
+
+@Injectable()
 export class AuthService {
-  signupUser(user: User){
-    firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-                    .catch(function(err){
-                      console.log(err);
-                    })
-  }
-
-  signinUser(user: User){
-    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-                    .catch(function(err){
-                      console.log(err);
-                    })
-  }
-
-  logout(){
-    firebase.auth().signOut();
-  }
-
-  /*Firebase SDK to simulate user Sign in*/
-  isAuthenticated(){
-    const user = firebase.auth().currentUser;
-    if(user){
-      return true;
-    } else {
-      return false;
+    constructor(private router: Router) {
     }
-  }
+
+    signupUser(user: User) {
+        firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    signinUser(user: User) {
+        firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    logout() {
+        firebase.auth().signOut();
+        this.router.navigate(['/signin']);
+    }
+
+    isAuthenticated(): Observable<boolean> {
+        const state = new Subject<boolean>();
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                state.next(true);
+            } else {
+                state.next(false);
+            }
+        });
+        return state.asObservable();
+    }
 }
