@@ -8,9 +8,9 @@ import { HeaderComponent } from "./shared/header.component";
 import { SigninComponent } from "./unprotected/signin.component";
 import { SignupComponent } from "./unprotected/signup.component";
 import { ProtectedComponent } from "./protected/protected.component";
-import { AuthenticateRoutingModule } from './app-routing.module';
-import { AuthService } from './shared/auth.service';
-import { AuthguardService } from './shared/authguard.service';
+import { AuthGuard } from "./shared/auth.guard";
+import { AuthService } from "./shared/auth.service";
+import { routing } from "./app.routing";
 
 
 @NgModule({
@@ -21,8 +21,11 @@ import { AuthguardService } from './shared/authguard.service';
         SignupComponent,
         ProtectedComponent
     ],
-    imports: [BrowserModule, HttpModule, ReactiveFormsModule, AuthenticateRoutingModule],
-    bootstrap: [AppComponent],
-    providers:[AuthService, AuthguardService]
+    imports: [BrowserModule, HttpModule, routing, ReactiveFormsModule],
+    providers: [
+        AuthGuard,
+        AuthService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
